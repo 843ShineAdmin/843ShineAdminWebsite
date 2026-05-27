@@ -203,14 +203,177 @@ const navItems = [
   { label: "Reviews", href: "#reviews" },
 ];
 
+const CALENDLY_SCRIPT_SRC = "https://assets.calendly.com/assets/external/widget.js";
+const BASE_CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL?.trim() ?? "";
+
+type CalendlyApi = {
+  initInlineWidget: (options: {
+    url: string;
+    parentElement: HTMLElement;
+    prefill?: {
+      name?: string;
+      email?: string;
+      customAnswers?: Record<string, string>;
+    };
+    resize?: boolean;
+  }) => void;
+};
+
+type BookingDetails = {
+  name: string;
+  email: string;
+  phone: string;
+  vehicle: string;
+  service: string;
+};
+
+const serviceLabels: Record<string, string> = {
+  full: "Full Detail",
+  interior: "Interior Detail",
+  exterior: "Exterior Detail",
+  quote: "Not sure, help me choose",
+};
+
+function getFormValue(formData: FormData, key: string) {
+  const value = formData.get(key);
+  return typeof value === "string" ? value.trim() : "";
+}
+
+function buildCalendlyUrl(details: BookingDetails) {
+  if (!BASE_CALENDLY_URL) return "";
+
+  try {
+    const url = new URL(BASE_CALENDLY_URL);
+    url.searchParams.set("hide_event_type_details", "1");
+    url.searchParams.set("hide_gdpr_banner", "1");
+    url.searchParams.set("background_color", "000000");
+    url.searchParams.set("text_color", "ffffff");
+    url.searchParams.set("primary_color", "58c7f3");
+    url.searchParams.set("name", details.name);
+    url.searchParams.set("email", details.email);
+    url.searchParams.set("a1", details.phone);
+    url.searchParams.set("a2", details.vehicle);
+    url.searchParams.set("a3", details.service);
+    return url.toString();
+  } catch {
+    return "";
+  }
+}
+
+function CalendlyInline({ details, url }: { details: BookingDetails; url: string }) {
+  const embedRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const parentElement = embedRef.current;
+    if (!parentElement) return;
+
+    let cancelled = false;
+
+    const initCalendly = () => {
+      if (cancelled) return;
+      const calendly = (window as Window & { Calendly?: CalendlyApi }).Calendly;
+      if (!calendly) return;
+
+      parentElement.innerHTML = "";
+      calendly.initInlineWidget({
+        url,
+        parentElement,
+        prefill: {
+          name: details.name,
+          email: details.email,
+          customAnswers: {
+            a1: details.phone,
+            a2: details.vehicle,
+            a3: details.service,
+          },
+        },
+        resize: false,
+      });
+    };
+
+    const existingScript = document.querySelector<HTMLScriptElement>(
+      `script[src="${CALENDLY_SCRIPT_SRC}"]`,
+    );
+
+    if ((window as Window & { Calendly?: CalendlyApi }).Calendly) {
+      initCalendly();
+    } else {
+      const script = existingScript ?? document.createElement("script");
+      script.src = CALENDLY_SCRIPT_SRC;
+      script.async = true;
+      script.addEventListener("load", initCalendly);
+
+      if (!existingScript) {
+        document.body.appendChild(script);
+      }
+
+      return () => {
+        cancelled = true;
+        script.removeEventListener("load", initCalendly);
+        parentElement.innerHTML = "";
+      };
+    }
+
+    return () => {
+      cancelled = true;
+      parentElement.innerHTML = "";
+    };
+  }, [url]);
+
+  return <div ref={embedRef} className="calendly-frame" aria-label="Calendly booking calendar" />;
+}
+
 function LeadForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [bookingUrl, setBookingUrl] = useState("");
+  const [bookingDetails, setBookingDetails] = useState<BookingDetails | null>(null);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // TODO: POST lead data to your endpoint / Meta CAPI / Zapier webhook here.
+    const formData = new FormData(e.currentTarget);
+    const details = {
+      name: getFormValue(formData, "name"),
+      email: getFormValue(formData, "email"),
+      phone: getFormValue(formData, "phone"),
+      vehicle: getFormValue(formData, "vehicle"),
+      service: serviceLabels[getFormValue(formData, "service")] ?? "Help me choose",
+    };
+    const calendlyUrl = buildCalendlyUrl(details);
+
+    setBookingDetails(details);
+    setBookingUrl(calendlyUrl);
     setSubmitted(true);
   };
+
+  if (bookingDetails && bookingUrl) {
+    return (
+      <div className="calendly-booking">
+        <div className="calendly-header">
+          <div>
+            <h3>Pick your appointment time</h3>
+            <p>Your form details are filled in. Calendly handles the live calendar.</p>
+          </div>
+          <div className="calendly-actions">
+            <button
+              type="button"
+              className="ghost-action"
+              onClick={() => {
+                setBookingDetails(null);
+                setBookingUrl("");
+                setSubmitted(false);
+              }}
+            >
+              Edit details
+            </button>
+            <a className="ghost-action" href={bookingUrl} target="_blank" rel="noopener noreferrer">
+              Open Calendly <ArrowUpRight size={16} strokeWidth={2} />
+            </a>
+          </div>
+        </div>
+        <CalendlyInline details={bookingDetails} url={bookingUrl} />
+      </div>
+    );
+  }
 
   if (submitted) {
     return (
@@ -227,13 +390,17 @@ function LeadForm() {
   return (
     <form className="lead-form" onSubmit={onSubmit}>
       <div className="lead-form-header">
-        <h3>Get your quote</h3>
-        <p>Send the details and we&apos;ll text back with availability.</p>
+        <h3>Get booked</h3>
+        <p>Send the details, then choose a live opening on the calendar.</p>
       </div>
       <div className="lead-grid">
         <label className="field-label">
           <span>Name</span>
           <input className="lead-input" name="name" type="text" required autoComplete="name" />
+        </label>
+        <label className="field-label">
+          <span>Email</span>
+          <input className="lead-input" name="email" type="email" required autoComplete="email" />
         </label>
         <label className="field-label">
           <span>Phone</span>
@@ -261,13 +428,9 @@ function LeadForm() {
             <option value="quote">Not sure, help me choose</option>
           </select>
         </label>
-        <label className="field-label field-wide">
-          <span>Preferred date</span>
-          <input className="lead-input" name="preferred-date" type="date" required />
-        </label>
       </div>
       <button type="submit" className="lead-submit">
-        Request my quote <ArrowRight size={18} strokeWidth={2} />
+        Continue to booking <ArrowRight size={18} strokeWidth={2} />
       </button>
     </form>
   );

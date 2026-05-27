@@ -464,7 +464,8 @@ select {
   border: 1px solid var(--border);
   border-radius: 8px;
   background: rgba(255, 255, 255, .035);
-  transition: transform 220ms ease, border-color 220ms ease, background 220ms ease;
+  box-shadow: 0 0 15px rgba(30, 100, 180, .8), 0 0 30px rgba(30, 100, 180, .5);
+  transition: transform 220ms ease, border-color 220ms ease, background 220ms ease, box-shadow 220ms ease;
 }
 
 .service-card:hover,
@@ -940,6 +941,80 @@ select {
   transform: translateY(-2px);
 }
 
+.calendly-booking {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .045);
+}
+
+.calendly-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 22px 22px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+
+.calendly-header h3 {
+  margin: 0 0 6px;
+  color: var(--white);
+  font-size: clamp(22px, 1.8vw, 28px);
+  line-height: 1.1;
+}
+
+.calendly-header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.calendly-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.ghost-action {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 13px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .04);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.ghost-action:hover {
+  border-color: rgba(255, 255, 255, .34);
+  background: rgba(255, 255, 255, .08);
+  transform: translateY(-1px);
+}
+
+.calendly-frame {
+  min-width: 320px;
+  height: 760px;
+  background: #000;
+}
+
+.calendly-frame iframe {
+  width: 100% !important;
+  height: 100% !important;
+  border: 0 !important;
+}
+
 .lead-success {
   padding: 28px;
   border: 1px solid var(--border);
@@ -1198,6 +1273,19 @@ select {
 
   .lead-grid {
     grid-template-columns: 1fr;
+  }
+
+  .calendly-header {
+    flex-direction: column;
+  }
+
+  .calendly-actions,
+  .ghost-action {
+    width: 100%;
+  }
+
+  .calendly-frame {
+    height: 720px;
   }
 
   .field-wide {
