@@ -1,8 +1,21 @@
 "use client";
 
-import { ArrowUpRight, ArrowRight, Menu, X } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  CalendarCheck,
+  Car,
+  Check,
+  Clock,
+  MapPin,
+  Menu,
+  MessageCircle,
+  ShieldCheck,
+  Star,
+  X,
+} from "lucide-react";
 import Image from "next/image";
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function BeforeAfterSlider() {
   const [pos, setPos] = useState(50);
@@ -63,7 +76,7 @@ function BeforeAfterSlider() {
     <div ref={containerRef} className="ba-slider">
       <Image
         src="/Images/After.png"
-        alt="After detail"
+        alt="Finished Charleston mobile detailing result"
         className="ba-img"
         fill
         sizes="(max-width: 1400px) 100vw, 1400px"
@@ -72,7 +85,7 @@ function BeforeAfterSlider() {
       <div className="ba-before-wrap" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
         <Image
           src="/Images/Before.png"
-          alt="Before detail"
+          alt="Vehicle before mobile detailing service"
           className="ba-img"
           fill
           sizes="(max-width: 1400px) 100vw, 1400px"
@@ -86,12 +99,108 @@ function BeforeAfterSlider() {
   );
 }
 
+const trustItems = [
+  { icon: Star, value: "5-star rated" },
+  { icon: Car, value: "150+ cars detailed" },
+  { icon: MapPin, value: "Mobile service" },
+  { icon: ShieldCheck, value: "Locally owned" },
+  { icon: Clock, value: "Weekend" },
+];
+
+const packages = [
+  {
+    title: "Full Detail",
+    description: "The complete reset for vehicles that need inside-out refinement.",
+    price: "From $249",
+    imageClass: "service-card-image-1",
+    includes: [
+      "Foam hand wash and wheel deep clean",
+      "Interior vacuum, wipe down, and crevice work",
+      "Leather, plastics, vents, glass, and door jambs",
+      "Tire dressing and finishing inspection",
+    ],
+  },
+  {
+    title: "Interior Detail",
+    description: "A focused cabin refresh for daily drivers, family cars, and weekend toys.",
+    price: "From $149",
+    imageClass: "service-card-image-2",
+    includes: [
+      "Thorough vacuum including trunk and mats",
+      "Dashboard, console, cupholder, and vent cleaning",
+      "Seat, carpet, and upholstery spot treatment",
+      "Interior glass and final scent-neutral finish",
+    ],
+  },
+  {
+    title: "Exterior Detail",
+    description: "Gloss, clarity, and protection tuned for Charleston roads and salt air.",
+    price: "From $129",
+    imageClass: "service-card-image-3",
+    includes: [
+      "Pre-rinse, foam bath, and hand wash",
+      "Wheel faces, tires, fuel door, and trim cleaned",
+      "Exterior glass and mirror polish",
+      "Tire shine and high-gloss towel finish",
+    ],
+  },
+];
+
+const galleryItems = [
+  {
+    src: "/Images/FrameImage.jpg",
+    alt: "Detailed Porsche interior in Charleston",
+    label: "Interior precision",
+  },
+  {
+    src: "/Images/Image2.png",
+    alt: "Premium Porsche cabin after detail",
+    label: "Leather and trim",
+  },
+  {
+    src: "/Images/Image3.png",
+    alt: "Detailed Range Rover exterior",
+    label: "Exterior gloss",
+  },
+  {
+    src: "/Images/Image1.png",
+    alt: "Detailed blue luxury SUV front quarter",
+    label: "Paint finish",
+  },
+];
+
 const reviews = [
-  "Car looked brand new again.",
-  "Super easy process and crazy good results.",
-  "Best detail I've ever had — worth every dollar.",
-  "Showed up on time, left the car spotless.",
-  "Genuinely the cleanest my car has ever been.",
+  {
+    name: "Alyssa M.",
+    vehicle: "BMW X5, Mount Pleasant",
+    quote: "Booked before a weekend trip and the SUV looked showroom clean inside and out.",
+    avatarSrc: "/Images/reviews/alyssa.jpg",
+  },
+  {
+    name: "Jordan P.",
+    vehicle: "Toyota 4Runner, James Island",
+    quote: "On time, easy to text with, and they got beach sand out of places I had given up on.",
+    avatarSrc: "/Images/reviews/jordan.jpg",
+  },
+  {
+    name: "Marcus R.",
+    vehicle: "Porsche 911, Downtown Charleston",
+    quote: "Careful work, premium feel, and no rushed driveway detail energy. Exactly what I wanted.",
+    avatarSrc: "/Images/reviews/marcus.jpg",
+  },
+  {
+    name: "Emily S.",
+    vehicle: "Range Rover, West Ashley",
+    quote: "The whole process was simple. They came to me and the finish looked incredible.",
+    avatarSrc: "/Images/reviews/emily.jpg",
+  },
+];
+
+const navItems = [
+  { label: "Services", href: "#services" },
+  { label: "Gallery", href: "#gallery" },
+  { label: "How It Works", href: "#how" },
+  { label: "Reviews", href: "#reviews" },
 ];
 
 function LeadForm() {
@@ -106,15 +215,10 @@ function LeadForm() {
   if (submitted) {
     return (
       <div className="lead-success">
-        <h3>Thanks — we&apos;ve got your details.</h3>
-        <p>Pick a time that works for you and we&apos;ll lock it in.</p>
-        <a
-          className="lead-cta"
-          href="https://calendly.com/your-link"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Book your time
+        <h3>Thanks, we&apos;ve got your request.</h3>
+        <p>We&apos;ll text back with availability and a clear quote for your vehicle.</p>
+        <a className="lead-cta" href="sms:+18435550000">
+          Text us now
         </a>
       </div>
     );
@@ -122,86 +226,78 @@ function LeadForm() {
 
   return (
     <form className="lead-form" onSubmit={onSubmit}>
-      <input
-        className="lead-input"
-        name="name"
-        type="text"
-        placeholder="Name"
-        required
-        autoComplete="name"
-      />
-      <input
-        className="lead-input"
-        name="phone"
-        type="tel"
-        placeholder="Phone"
-        required
-        autoComplete="tel"
-      />
-      <input
-        className="lead-input"
-        name="vehicle"
-        type="text"
-        placeholder="Vehicle (Year / Make / Model)"
-        required
-      />
-      <select className="lead-input" name="service" required defaultValue="">
-        <option value="" disabled>Service wanted</option>
-        <option value="full">Full Detail</option>
-        <option value="interior">Interior Detail</option>
-        <option value="exterior">Exterior Detail</option>
-      </select>
+      <div className="lead-form-header">
+        <h3>Get your quote</h3>
+        <p>Send the details and we&apos;ll text back with availability.</p>
+      </div>
+      <div className="lead-grid">
+        <label className="field-label">
+          <span>Name</span>
+          <input className="lead-input" name="name" type="text" required autoComplete="name" />
+        </label>
+        <label className="field-label">
+          <span>Phone</span>
+          <input className="lead-input" name="phone" type="tel" required autoComplete="tel" />
+        </label>
+        <label className="field-label">
+          <span>Vehicle</span>
+          <input
+            className="lead-input"
+            name="vehicle"
+            type="text"
+            placeholder="Year / Make / Model"
+            required
+          />
+        </label>
+        <label className="field-label">
+          <span>Service wanted</span>
+          <select className="lead-input" name="service" required defaultValue="">
+            <option value="" disabled>
+              Select a package
+            </option>
+            <option value="full">Full Detail</option>
+            <option value="interior">Interior Detail</option>
+            <option value="exterior">Exterior Detail</option>
+            <option value="quote">Not sure, help me choose</option>
+          </select>
+        </label>
+        <label className="field-label field-wide">
+          <span>Preferred date</span>
+          <input className="lead-input" name="preferred-date" type="date" required />
+        </label>
+      </div>
       <button type="submit" className="lead-submit">
-        Submit
+        Request my quote <ArrowRight size={18} strokeWidth={2} />
       </button>
     </form>
   );
 }
 
-function ReviewsCarousel() {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      setIndex((i) => (i + 1) % reviews.length);
-    }, 4500);
-    return () => clearInterval(id);
-  }, []);
-
+function ReviewsGrid() {
   return (
-    <div className="reviews-carousel">
-      <div className="reviews-track">
-        {reviews.map((quote, i) => (
-          <figure
-            key={quote}
-            className={`review-slide ${i === index ? "is-active" : ""}`}
-            aria-hidden={i !== index}
-          >
-            <div className="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
-            <blockquote>“{quote}”</blockquote>
-          </figure>
-        ))}
-      </div>
-      <div className="reviews-dots" role="tablist">
-        {reviews.map((_, i) => (
-          <button
-            key={i}
-            className={`reviews-dot ${i === index ? "is-active" : ""}`}
-            onClick={() => setIndex(i)}
-            aria-label={`Show review ${i + 1}`}
-          />
-        ))}
-      </div>
+    <div className="reviews-grid">
+      {reviews.map((review) => (
+        <figure className="review-card" key={review.name}>
+          <div className="review-stars" aria-label="5 out of 5 stars">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <Star key={index} size={14} fill="currentColor" strokeWidth={1.8} />
+            ))}
+          </div>
+          <blockquote>“{review.quote}”</blockquote>
+          <figcaption>
+            <div className="review-avatar" aria-hidden="true">
+              <Image src={review.avatarSrc} alt="" fill sizes="44px" />
+            </div>
+            <div>
+              <strong>{review.name}</strong>
+              <span>{review.vehicle}</span>
+            </div>
+          </figcaption>
+        </figure>
+      ))}
     </div>
   );
 }
-
-const navItems = [
-  { label: "Services", href: "#services" },
-  { label: "Gallery", href: "#before-after" },
-  { label: "How It Works", href: "#how" },
-  { label: "Reviews", href: "#reviews" },
-];
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -214,7 +310,14 @@ export default function Home() {
     <main className="site-shell">
       <header className="topbar" aria-label="Primary navigation">
         <a className="brand" href="#" aria-label="843Shine home">
-          843Shine
+          <Image
+            src="/Images/Logo.png"
+            alt="843Shine logo"
+            width={40}
+            height={40}
+            className="brand-logo"
+          />
+          <span>843Shine</span>
         </a>
 
         <nav className="nav-links desktop-nav">
@@ -230,7 +333,7 @@ export default function Home() {
         </a>
 
         <button
-          className="mobile-menu-toggle" 
+          className="mobile-menu-toggle"
           onClick={toggleMobileMenu}
           aria-label="Toggle mobile menu"
           aria-expanded={mobileMenuOpen}
@@ -243,19 +346,11 @@ export default function Home() {
       {mobileMenuOpen && (
         <nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation">
           {navItems.map((item) => (
-            <a
-              href={item.href}
-              key={item.href}
-              onClick={() => setMobileMenuOpen(false)}
-            >
+            <a href={item.href} key={item.href} onClick={() => setMobileMenuOpen(false)}>
               {item.label}
             </a>
           ))}
-          <a
-            className="mobile-quote-button"
-            href="#booking"
-            onClick={() => setMobileMenuOpen(false)}
-          >
+          <a className="mobile-quote-button" href="#booking" onClick={() => setMobileMenuOpen(false)}>
             Get a quote
           </a>
         </nav>
@@ -270,17 +365,22 @@ export default function Home() {
             <span className="hero-title-line">Detailing</span>
           </h1>
           <p className="hero-sub">
-            Premium mobile detailing in Charleston — experience the prestige of a professionally
-            detailed car, refined at every turn.
+            Premium mobile detailing for Charleston, Mount Pleasant, James Island, West Ashley,
+            Daniel Island, Johns Island, and nearby Lowcountry driveways.
           </p>
-          <a className="connect-link" href="#booking">
-            Let&apos;s connect <ArrowUpRight size={22} strokeWidth={2} />
-          </a>
+          <div className="hero-actions">
+            <a className="primary-link" href="#booking">
+              Book a detail <ArrowUpRight size={20} strokeWidth={2} />
+            </a>
+            <a className="secondary-link" href="sms:+18435550000">
+              Text for a quote
+            </a>
+          </div>
         </div>
 
         <Image
           src="/Images/BrandingImage1.png"
-          alt="Luxury car"
+          alt="843Shine premium mobile detailing"
           className="hero-image"
           width={1400}
           height={900}
@@ -289,95 +389,174 @@ export default function Home() {
         />
       </section>
 
-      <section id="services" className="services-section" aria-labelledby="services-title">
+      <section className="trust-strip" aria-label="843Shine highlights">
+        {trustItems.map(({ icon: Icon, value }) => (
+          <div className="trust-item" key={value}>
+            <Icon size={22} strokeWidth={1.8} />
+            <div>
+              <strong>{value}</strong>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      <section id="services" className="services-section compact-section" aria-labelledby="services-title">
         <div className="services-container">
-          <p className="services-kicker">843 Shine Detailing</p>
-          <div className="services-divider" />
-          <div className="services-header">
-            <h2 id="services-title" className="services-title">Love in Every Detail</h2>
+          <p className="section-kicker">Premium packages</p>
+          <div className="services-header split-header">
+            <h2 id="services-title" className="services-title">
+              Our Services
+            </h2>
             <p className="services-intro">
-              Immerse yourself in luxury with our bespoke detailing packages tailored to your car&apos;s unique needs.
+              Mobile packages for a cleaner interior, sharper exterior, or the full reset.
             </p>
           </div>
           <div className="services-grid">
-            <article className="service-card">
-              <div className="service-card-image service-card-image-1" aria-hidden="true" />
-              <h3>Full Detail</h3>
-              <p>Complete interior + exterior clean.</p>
-              <div className="service-price">$249</div>
-              <a className="service-learn" href="#booking">
-                Learn more <ArrowRight size={18} strokeWidth={2} />
-              </a>
-            </article>
-            <article className="service-card">
-              <div className="service-card-image service-card-image-2" aria-hidden="true" />
-              <h3>Interior Detail</h3>
-              <p>Seats, carpets, vacuum, wipe down, deep clean.</p>
-              <div className="service-price">$149</div>
-              <a className="service-learn" href="#booking">
-                Learn more <ArrowRight size={18} strokeWidth={2} />
-              </a>
-            </article>
-            <article className="service-card">
-              <div className="service-card-image service-card-image-3" aria-hidden="true" />
-              <h3>Exterior Detail</h3>
-              <p>Hand wash, wheels, tire shine, windows.</p>
-              <div className="service-price">$129</div>
-              <a className="service-learn" href="#booking">
-                Learn more <ArrowRight size={18} strokeWidth={2} />
-              </a>
-            </article>
+            {packages.map((item) => (
+              <article className="service-card" key={item.title}>
+                <div className={`service-card-image ${item.imageClass}`} aria-hidden="true" />
+                <div className="service-card-body">
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                  <ul className="service-includes">
+                    {item.includes.map((include) => (
+                      <li key={include}>
+                        <Check size={17} strokeWidth={2.4} /> {include}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="service-card-footer">
+                    <div className="service-price">{item.price}</div>
+                    <a className="service-learn" href="#booking">
+                      Request quote <ArrowRight size={18} strokeWidth={2} />
+                    </a>
+                  </div>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
-      <section id="before-after" className="services-section" aria-labelledby="ba-title">
+      <section id="gallery" className="services-section compact-section" aria-labelledby="gallery-title">
         <div className="services-container">
-          <div className="services-header">
-            <h2 id="ba-title" className="services-title">See the Difference</h2>
+          <div className="services-header split-header">
+            <div>
+              <p className="section-kicker">Recent shine</p>
+              <h2 id="gallery-title" className="services-title">
+                Charleston Detailing Gallery.
+              </h2>
+            </div>
+            <p className="services-intro">
+              Clean interiors, sharp exteriors, and polished finishes.
+            </p>
+          </div>
+          <div className="gallery-grid">
+            {galleryItems.map((item, index) => (
+              <figure className={`gallery-card gallery-card-${index + 1}`} key={item.src}>
+                <Image src={item.src} alt={item.alt} fill sizes="(max-width: 900px) 100vw, 50vw" />
+                <figcaption>{item.label}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="before-after" className="services-section compact-section" aria-labelledby="ba-title">
+        <div className="services-container">
+          <div className="services-header split-header">
+            <div>
+              <p className="section-kicker">Proof in the finish</p>
+              <h2 id="ba-title" className="services-title">
+                See the difference.
+              </h2>
+            </div>
+            <p className="services-intro">
+              Drag the slider to compare the reset. It is the kind of clean you feel before you
+              even start the engine.
+            </p>
           </div>
           <BeforeAfterSlider />
         </div>
       </section>
 
-      <section id="how" className="services-section" aria-labelledby="how-title">
+      <section id="how" className="services-section compact-section" aria-labelledby="how-title">
         <div className="services-container">
-          <div className="services-header how-header">
-            <h2 id="how-title" className="services-title">3 simple steps.</h2>
+          <div className="services-header split-header">
+            <div>
+              <p className="section-kicker">3 simple steps</p>
+              <h2 id="how-title" className="services-title">
+                How Mobile Detailing Works.
+              </h2>
+            </div>
+            <p className="services-intro">
+              Quick quote, easy scheduling, mobile service.
+            </p>
           </div>
           <ol className="how-steps">
             <li className="how-step">
+              <span className="how-icon">
+                <MessageCircle size={30} strokeWidth={1.8} />
+              </span>
               <span className="how-step-num">01</span>
-              <h3>Request Quote</h3>
+              <h3>Request quote</h3>
             </li>
             <li className="how-step">
+              <span className="how-icon">
+                <Check size={30} strokeWidth={1.8} />
+              </span>
               <span className="how-step-num">02</span>
-              <h3>Pick Service</h3>
+              <h3>Pick service</h3>
             </li>
             <li className="how-step">
+              <span className="how-icon">
+                <CalendarCheck size={30} strokeWidth={1.8} />
+              </span>
               <span className="how-step-num">03</span>
-              <h3>We Come To You</h3>
+              <h3>We come to you</h3>
             </li>
           </ol>
         </div>
       </section>
 
-      <section id="reviews" className="services-section" aria-labelledby="reviews-title">
+      <section id="reviews" className="services-section compact-section" aria-labelledby="reviews-title">
         <div className="services-container">
-          <div className="services-header">
-            <h2 id="reviews-title" className="services-title">What Clients Say</h2>
+          <div className="services-header split-header">
+            <div>
+              <p className="section-kicker">Local clients</p>
+              <h2 id="reviews-title" className="services-title">
+                What Charleston Clients Say.
+              </h2>
+            </div>
+            <p className="services-intro">
+              5-star mobile detailing from local drivers.
+            </p>
           </div>
-          <ReviewsCarousel />
+          <ReviewsGrid />
         </div>
       </section>
 
-      <section id="booking" className="services-section" aria-labelledby="booking-title">
-        <div className="services-container">
-          <div className="services-header">
-            <h2 id="booking-title" className="services-title">Contact us.</h2>
+      <section id="booking" className="booking-section" aria-labelledby="booking-title">
+        <div className="services-container booking-grid">
+          <div>
+            <p className="section-kicker">Get on the schedule</p>
+            <h2 id="booking-title" className="services-title">
+              Get a clear quote
+            </h2>
             <p className="services-intro">
-              Tell us about your vehicle and we&apos;ll be in touch to confirm a time.
+              Name, phone, vehicle, service, and preferred date. We&apos;ll handle the rest.
             </p>
+            <div className="booking-notes">
+              <span>
+                <Check size={16} /> Mobile service
+              </span>
+              <span>
+                <Check size={16} /> Weekend availability
+              </span>
+              <span>
+                <Check size={16} /> Premium interior and exterior care
+              </span>
+            </div>
           </div>
           <LeadForm />
         </div>
@@ -397,17 +576,29 @@ export default function Home() {
           </div>
           <div className="footer-col">
             <span className="footer-label">Service Area</span>
-            <span>Charleston & Lowcountry</span>
+            <span>Charleston, SC & Lowcountry</span>
           </div>
           <div className="footer-col">
             <span className="footer-label">Hours</span>
-            <span>Mon–Sat · 8am–6pm</span>
+            <span>Mon-Sat + select weekends</span>
           </div>
         </div>
         <div className="footer-bottom">
           <span>© {new Date().getFullYear()} 843Shine</span>
         </div>
       </footer>
+
+      <nav className="sticky-mobile-cta" aria-label="Quick contact actions">
+        <a href="sms:+18435550000">
+          <MessageCircle size={17} /> Text Us
+        </a>
+        <a href="#booking">
+          <ArrowUpRight size={17} /> Get Quote
+        </a>
+        <a href="#booking">
+          <CalendarCheck size={17} /> Book Now
+        </a>
+      </nav>
     </main>
   );
 }
