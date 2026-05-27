@@ -148,24 +148,24 @@ const packages = [
 
 const galleryItems = [
   {
-    src: "/Images/FrameImage.jpg",
+    src: "/Images/IMG_6167.png",
     alt: "Detailed Porsche interior in Charleston",
-    label: "Interior precision",
+    label: "Exterior",
   },
   {
-    src: "/Images/Image2.png",
+    src: "/Images/IMG_7693.png",
     alt: "Premium Porsche cabin after detail",
-    label: "Leather and trim",
-  },
-  {
-    src: "/Images/Image3.png",
-    alt: "Detailed Range Rover exterior",
-    label: "Exterior gloss",
-  },
-  {
-    src: "/Images/Image1.png",
-    alt: "Detailed blue luxury SUV front quarter",
     label: "Paint finish",
+  },
+  {
+    src: "/Images/IMG_7726.png",
+    alt: "Detailed Range Rover exterior",
+    label: "Interior",
+  },
+  {
+    src: "/Images/IMG_9521.png",
+    alt: "Detailed blue luxury SUV front quarter",
+    label: "Trim",
   },
 ];
 
@@ -217,7 +217,7 @@ function LeadForm() {
       <div className="lead-success">
         <h3>Thanks, we&apos;ve got your request.</h3>
         <p>We&apos;ll text back with availability and a clear quote for your vehicle.</p>
-        <a className="lead-cta" href="sms:+18435550000">
+        <a className="lead-cta" href="sms:+18435322909">
           Text us now
         </a>
       </div>
@@ -372,7 +372,7 @@ export default function Home() {
             <a className="primary-link" href="#booking">
               Book a detail <ArrowUpRight size={20} strokeWidth={2} />
             </a>
-            <a className="secondary-link" href="sms:+18435550000">
+            <a className="secondary-link" href="sms:+18435322909">
               Text for a quote
             </a>
           </div>
@@ -566,7 +566,7 @@ export default function Home() {
         <div className="footer-inner">
           <div className="footer-col">
             <span className="footer-label">Phone</span>
-            <a href="tel:+18435550000">(843) 555-0000</a>
+            <a href="tel:+18435322909">843 532 2909</a>
           </div>
           <div className="footer-col">
             <span className="footer-label">Instagram</span>
@@ -589,7 +589,7 @@ export default function Home() {
       </footer>
 
       <nav className="sticky-mobile-cta" aria-label="Quick contact actions">
-        <a href="sms:+18435550000">
+        <a href="sms:+18435322909">
           <MessageCircle size={17} /> Text Us
         </a>
         <a href="#booking">
