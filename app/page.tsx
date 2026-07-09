@@ -117,7 +117,7 @@ const packages = [
     price: "$250",
     originalPrice: "$290",
     featured: true,
-    image: "/Images/Image1.png",
+    image: "/Images/DefenderClean.jpg",
     includes: [
       "Foam hand wash and wheel deep clean",
       "Interior vacuum, wipe down, and crevice work",
